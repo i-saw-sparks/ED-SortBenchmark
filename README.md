@@ -1,1 +1,1 @@
-![Screenshot](../resources/ss.png)
+![Screenshot](https://github.com/i-saw-sparks/ED-SortBenchmark/blob/master/resources/ss.png)
