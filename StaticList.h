@@ -66,9 +66,10 @@ StaticList<T, MAXSIZE>::StaticList(const StaticList<T, MAXSIZE> &cpy) {
 
 template<typename T, int MAXSIZE>
 void StaticList<T, MAXSIZE>::copy(const StaticList<T, MAXSIZE> &cpy) {
-    for (int i = 0; i < cpy.last() + 1; ++i) {
+    for (int i = 0; i < cpy.last + 1; ++i) {
         this->data[i] = cpy.fetch(i);
     }
+    this->last = cpy.last;
 }
 
 template<typename T, int MAXSIZE>
@@ -284,8 +285,8 @@ void StaticList<T, MAXSIZE>::sortByMerge(const int& left, const int& right, std:
 
     int mid((left + right)/2);
 
-    sortByMerge(left, mid);
-    sortByMerge(mid + 1, right);
+    sortByMerge(left, mid, comp);
+    sortByMerge(mid + 1, right, comp);
 
     static T aux[MAXSIZE];
     for(int i = left; i <= right; i++)
@@ -294,12 +295,15 @@ void StaticList<T, MAXSIZE>::sortByMerge(const int& left, const int& right, std:
     int i(left), j(mid + 1), iter(left);
 
     while(i <= mid && j<= right){
-        while(i <= mid && comp(aux[i], aux[j]) <= 0)
+        while(i <= mid && comp(aux[i], aux[j]) <= 0) {
             data[iter++] = aux[i++];
+        }
 
-        if(i <= mid)
-            while (j <= right && comp(aux[i], aux[j]) <= 0)
+        if(i <= mid) {
+            while (j <= right && comp(aux[j], aux[i]) <= 0) {
                 data[iter++] = aux[j++];
+            }
+        }
     }
 
     while (i <= mid)
@@ -310,7 +314,7 @@ void StaticList<T, MAXSIZE>::sortByMerge(const int& left, const int& right, std:
 
 template<typename T, int MAXSIZE>
 void StaticList<T, MAXSIZE>::quickSort(std::function<int(T, T)> comp) {
-    quickSort(0, last);
+    quickSort(0, last, comp);
 }
 
 template<typename T, int MAXSIZE>
@@ -332,8 +336,8 @@ void StaticList<T, MAXSIZE>::quickSort(const int& left, const int& right, std::f
     if(i != right)
         swapData(data[i], data[right]);
 
-    quickSort(left, i - 1);
-    quickSort(i + 1, right);
+    quickSort(left, i - 1, comp);
+    quickSort(i + 1, right, comp);
 }
 
 template<typename T, int MAXSIZE>
