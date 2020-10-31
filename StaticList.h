@@ -47,6 +47,9 @@ public:
     void sortByShell(std::function<int(T, T)> comp);
     void sortByInsert(std::function<int(T, T)> comp);
     void sortBySelect(std::function<int(T, T)> comp);
+    void sortByMerge(const int&, const int&, std::function<int(T, T)> comp);
+    void sortByMerge(std::function<int(T, T)> comp);
+    void quickSort(std::function<int(T, T)> comp);
 
     StaticList &operator=(const StaticList &);
 };
@@ -265,6 +268,48 @@ void StaticList<T, MAXSIZE>::sortBySelect(std::function<int(T, T)> comp) {
         }
 
     }
+}
+
+template<typename T, int MAXSIZE>
+void StaticList<T, MAXSIZE>::sortByMerge(std::function<int(T, T)> comp) {
+    sortByMerge(0, last, comp);
+}
+
+template<typename T, int MAXSIZE>
+void StaticList<T, MAXSIZE>::sortByMerge(const int& left, const int& right, std::function<int(T, T)> comp) {
+
+    if(left >= right)
+        return;
+
+    int mid((left + right)/2);
+
+    sortByMerge(left, mid);
+    sortByMerge(mid + 1, right);
+
+    static T aux[MAXSIZE];
+    for(int i = left; i <= right; i++)
+        aux[i] = data[i];
+
+    int i(left), j(mid + 1), iter(left);
+
+    while(i <= mid && j<= right){
+        while(i <= mid && aux[i] <= aux[j])
+            data[iter++] = aux[i++];
+
+        if(i <= mid)
+            while (j <= right && aux[j] <= aux[i])
+                data[iter++] = aux[j++];
+    }
+
+    while (i <= mid)
+        data[iter++] = aux[i++];
+    while(j <= right)
+        data[iter++] = aux[j++];
+}
+
+template<typename T, int MAXSIZE>
+void StaticList<T, MAXSIZE>::quickSort(std::function<int(T, T)> comp) {
+
 }
 
 template<typename T, int MAXSIZE>
