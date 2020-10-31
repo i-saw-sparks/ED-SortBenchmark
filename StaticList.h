@@ -60,7 +60,6 @@ StaticList<T, MAXSIZE>::StaticList():last(-1) {}
 
 template<typename T, int MAXSIZE>
 StaticList<T, MAXSIZE>::StaticList(const StaticList<T, MAXSIZE> &cpy) {
-    this->size = cpy.getSize();
     this->copy(cpy);
 }
 
@@ -219,6 +218,9 @@ void StaticList<T, MAXSIZE>::sortByEnhancedBubble(std::function<int(T, T)> comp)
             }
         }
         i--;
+        if(i%10 == 0){
+            int b;
+        }
     }while(flag);
 }
 

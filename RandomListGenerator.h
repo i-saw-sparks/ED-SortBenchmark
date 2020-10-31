@@ -11,9 +11,10 @@
 
 class RandomListGenerator {
 public:
-    static StaticList<int, 100000>& generate();
+    static void generate(StaticList<int, 100000>&);
+    StaticList<int, 100000>& generate();
 private:
-
+    StaticList<int, 100000> data;
 };
 
 
